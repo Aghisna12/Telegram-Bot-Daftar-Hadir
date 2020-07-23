@@ -16,7 +16,7 @@ Bot Telegram Sederhana Untuk Mendata Daftar Hadir
 
 ## Contoh Bot
 ### Bot Shofia
-[@sgofiabot](https://t.me/shofiabot)
+[@shofiabot](https://t.me/shofiabot)
 
 ## Contoh Website
 #### Web Daftar Hadir
