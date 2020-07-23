@@ -8,12 +8,12 @@ Bot Telegram Sederhana Untuk Mendata Daftar Hadir
 ![sudah hadir](https://github.com/Aghisna12/Telegram-Bot-Daftar-Hadir/blob/master/img/sudah_hadir.jpg)
 
 ## web daftar hadir untuk guest
-![daftar hadir guset](https://github.com/Aghisna12/Telegram-Bot-Daftar-Hadir/blob/master/img/daftar_hadir_guest.jpg)
+![daftar hadir guset](https://github.com/Aghisna12/Telegram-Bot-Daftar-Hadir/blob/master/img/daftar_hadir_guest.png)
 
 ## web daftar hadir untuk admin
-![daftar hadir admin](https://github.com/Aghisna12/Telegram-Bot-Daftar-Hadir/blob/master/img/daftar_hadir_admin.jpg)
+![daftar hadir admin](https://github.com/Aghisna12/Telegram-Bot-Daftar-Hadir/blob/master/img/daftar_hadir_admin.png)
 
 ## tambah daftar hadir untuk admin
-![tambah hadir admin](https://github.com/Aghisna12/Telegram-Bot-Daftar-Hadir/blob/master/img/tambah_hadir_admin.jpg)
+![tambah hadir admin](https://github.com/Aghisna12/Telegram-Bot-Daftar-Hadir/blob/master/img/tambah_hadir_admin.png)
 
 #### Terimakasih
