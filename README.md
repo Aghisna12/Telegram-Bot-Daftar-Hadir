@@ -21,7 +21,7 @@ Bot Telegram Sederhana Untuk Mendata Daftar Hadir
 ## Contoh Website
 #### Web Daftar Hadir
 [aghisna12.github.io/belajar/daftar-hadir.html](https://aghisna12.github.io/belajar/daftar-hadir.html)
-*** login key : belajarbot
+* login key : belajarbot
 
 ## Contoh Gambar
 #### command : /hadir
