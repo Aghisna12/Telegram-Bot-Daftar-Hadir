@@ -1,6 +1,6 @@
 /**
-* File Name : daftar-hadir.html
-* Language Code : HTML
+* File Name : Bot_Daftar_Hadir.gs
+* Language Code : Google Script(gs)
 * Build Date : 23-07-2020 : 8am (Yogyakarta, Indonesia)
 * Last Update : -
 * Credit : Aghisna12
