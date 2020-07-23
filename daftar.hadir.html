@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Belajar</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+<style type="text/css">
+ /* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.modal:focus {
+  opacity: 1;
+  transition: opacity 1s;
+}
+#modal.hide {
+  opacity: 0;
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+  position: absolute;
+  top: 10px;
+  right: 30px;
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+.footer {
+  position: auto;
+  bottom: 0;
+  width: 100%;
+  height: 40px; /* Set the fixed height of the footer here */
+  line-height: 40px; /* Vertically center the text there */
+  background-color: #f5f5f5;
+}
+</style> 
+</head>
+<body>
+<nav class="navbar navbar-light bg-light">
+	<a class="navbar-brand" href="daftar-hadir.html"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-joystick" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M7.106 15.553L.553 12.276A1 1 0 0 1 0 11.382V9.471a1 1 0 0 1 .606-.89L6 6.269v1.088L1 9.5l5.658 2.83a3 3 0 0 0 2.684 0L15 9.5l-5-2.143V6.27l5.394 2.312a1 1 0 0 1 .606.89v1.911a1 1 0 0 1-.553.894l-6.553 3.277a2 2 0 0 1-1.788 0z"/><path fill-rule="evenodd" d="M7.5 9.5v-6h1v6h-1z"/><path d="M10 9.75c0 .414-.895.75-2 .75s-2-.336-2-.75S6.895 9 8 9s2 .336 2 .75zM10 2a2 2 0 1 1-4 0 2 2 0 0 1 4 0z"/></svg> <b>Belajar Bot</b></a>
+	<div id="admin" class="btn-toolbar" role="toolbar" aria-lable="toolbar button" style="display:none;">
+		<div class="btn-group mr-2">
+			<button class="btn btn-info" onclick="cek('adduserform', true);cek('result', false);" id="adduser">ADD USER</button>
+		</div>
+		<div class="btn-group mr-2">
+			<button class="btn btn-danger" onclick="sign_out()" id="logout">LOGOUT</button>
+		</div>
+	</div>
+	<div id="guest" class="btn-toolbar" role="toolbar" aria-lable="toolbar button" style="display:none;">
+		<div class="btn-group mr-2">
+			<button class="btn btn-info" onclick="cek('login', true);cek('result', false);">LOGIN</button>
+		</div>
+	</div>
+</nav>
+<div class="alert alert-primary" role="alert" id="success" style="display: none;">
+	Error!
+</div>
+<div class="alert alert-warning" role="alert" id="error" style="display: none;">
+	Error!
+</div>
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="cek('myModal', false)">&times;</span>
+        <h2>Details</h2>
+        <p>Username      : <span id="username"></span></p>
+        <p>User Id       : <span id="user_id"></span></p>
+        <p>Tanggal Hadir : <span id="tanggal_hadir"></span></p>
+        <p>Jenis Kelamin : <span id="jenis_kelamin"></span></p>
+        <div id="tmpsimpan"></div>
+    </div>
+</div>
+<div id="myModalDel" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="cek('myModalDel', false)">&times;</span>
+        <h2>Apa Anda Yakin?</h2>
+        <p>Username      : <span id="del_username"></span></p>
+        <p>User Id       : <span id="del_user_id"></span></p>
+        <p>Tanggal Hadir : <span id="del_tanggal_hadir"></span></p>
+        <p>Jenis Kelamin : <span id="del_jenis_kelamin"></span></p>
+        <div id="tmpdel"></div>
+    </div>
+</div>
+<main role="main" class="container">
+	<div class="text-center mt-5 mb-5" id="wait" style="display: none;">
+	  <div class="spinner-border" role="status">
+	    <span class="sr-only">Loading...</span>
+	  </div>
+	</div>
+	<form id="login" onsubmit="sign_in()" style="display: none;">
+		<div class="form-group modal-sm mx-auto">
+			<h1 class="text-center">Please sign in</h1>
+			<label for="key" class="mt-2">Input Key</label>
+			<input type="text" id="key" class="form-control" placeholder="Key..." required autofocus>
+			<input  type="button" class="btn btn-primary btn-block mt-2" onclick="sign_in()" value="Sign in">
+			<input  type="button" class="btn btn-danger btn-block mt-2" onclick="cek('login', false);cek('result', true);" value="Close">
+			<center><p class="mt-3 mb-3 text-muted">Aghisna12 &copy; 2020</p></center>
+		</div>
+	</form>
+	<form id="adduserform" style="display: none;">
+		<div class="form-group modal-sm mx-auto">
+			<h1 class="text-center">Tambah User</h1>
+			<label for="set_username" class="mt-1">Username</label>
+			<input type="text" id="set_username" class="form-control" onkeypress="return event.keyCode != 13" placeholder="UserName" required autofocus>
+			<label for="set_user_id" class="mt-1">User Id</label>
+			<input type="text" id="set_user_id" class="form-control" onkeypress="return event.keyCode != 13" placeholder="User Id">
+			<div>
+			    <label for="is_tanggal_hadir" class="mt-1">Atur Tanggal Hadir?</label>
+			    <input type="checkbox" id="is_tanggal_hadir" onclick="setting_tanggal_hadir();"/>
+			</div>
+			<div id="set_tanggal_hadir_form" style="display: none;">
+				<label for="set_tanggal_hadir" class="mt-1">Tanggal Hadir</label>
+				<input class="form-control" type="date" id="set_tanggal_hadir" />
+			</div>
+			<div>
+			    <label for="is_jenis_kelamin" class="mt-1">Atur Jenis Kelamin?</label>
+			    <input type="checkbox" id="is_jenis_kelamin" onclick="setting_jenis_kelamin();"/>
+			</div>
+			<div id="set_jenis_kelamin_form" style="display: none;">
+			    <label for="set_jenis_kelamin" class="mt-1">Jenis Kelamin</label>
+			    <select class="form-control" id="set_jenis_kelamin">
+                    <option selected>laki-laki</option>
+                    <option>perempuan</option>
+                </select>
+			</div>
+			<input type="button" class="btn btn-primary btn-block mt-2" onclick="add_user()" value="Add User">
+			<input  type="button" class="btn btn-danger btn-block mt-2" onclick="cek('adduserform', false);cek('result', true);" value="Close">
+			<center><p class="mt-3 mb-3 text-muted">Aghisna12 &copy; 2020</p></center>
+		</div>
+	</form>
+	<div class="table-responsive" style="display: none; overflow-y: hidden;" id="result">
+		<h1 class="mt-3 mb-3 text-center">Daftar Hadir</h1>
+		<table class="table table-bordered" id="userlist">
+			<thead>
+				<tr>
+					<th scope="col">Username <span class="badge badge-pill badge-primary" id="total_user"></span></th>
+					<th scope="col">Tanggal Hadir</th>
+					<th scope="col">Jenis Kelamin <span class="badge badge-pill badge-primary" id="total_lakilaki"></span><span class="badge badge-pill badge-warning ml-2" id="total_perempuan"></span></th>
+					<th scope="col">Aksi</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</div>
+</main>
+<footer class="footer" id="footer">
+    <center><span class="text-muted">Made with &hearts; by <a href="https://t.me/aghisna12">Aghisna12</a> &copy; 2020  (Powered by : <a href="https://github.com/">Github</a> & <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-bootstrap-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.002 0a4 4 0 0 0-4 4v8a4 4 0 0 0 4 4h8a4 4 0 0 0 4-4V4a4 4 0 0 0-4-4h-8zm1.06 12h3.475c1.804 0 2.888-.908 2.888-2.396 0-1.102-.761-1.916-1.904-2.034v-.1c.832-.14 1.482-.93 1.482-1.816 0-1.3-.955-2.11-2.542-2.11H5.062V12zm1.313-4.875V4.658h1.78c.973 0 1.542.457 1.542 1.237 0 .802-.604 1.23-1.764 1.23H6.375zm0 3.762h1.898c1.184 0 1.81-.48 1.81-1.377 0-.885-.65-1.348-1.886-1.348H6.375v2.725z"/></svg> <a href="https://getbootstrap.com/">Bootstrap</a>)</span></center>
+</footer>
+<script>
+var server = "https://script.google.com/macros/s/AKfycbzS-PMxX_g0VEd5548h8q_PmDowQ7hdPqS4Xl5l4M2qAs5c3YQ/exec?";
+var date_now;
+var is_admin = false;
+
+function cek(id, show) {
+	if (show) {
+		document.getElementById(id).style.display = "block";
+	} else {
+		document.getElementById(id).style.display = "none";
+	}	
+}
+
+function scc(msg) {
+	document.getElementById("success").innerHTML = '<span class="close" onclick="cek(\'success\', false)">&times;</span>' + msg;
+	cek("success", true);
+}
+
+function err(msg) {
+	document.getElementById("error").innerHTML = '<span class="close" onclick="cek(\'error\', false)">&times;</span>' + msg;
+	cek("error", true);
+}
+
+function response(data) {
+	if (data) {
+		if (data.status == "success") {
+			scc("Success : " + JSON.stringify(data.data));
+		} else {
+			err("Failed : " + JSON.stringify(data.data));
+		}
+	}
+	cek('wait', false);
+	open_url("daftar-hadir.html", true);
+}
+
+function setting_tanggal_hadir() {
+	var check = document.getElementById("is_tanggal_hadir");
+	if (check && check.checked) {
+		document.getElementById("set_tanggal_hadir").value = new Date().toISOString().substr(0,10);
+		document.getElementById("set_tanggal_hadir_form").style.display = "block";
+	} else {
+		document.getElementById("set_tanggal_hadir_form").style.display = "none";
+	}
+}
+
+function setting_jenis_kelamin() {
+	var check = document.getElementById("is_jenis_kelamin");
+	if (check && check.checked) {
+		document.getElementById("set_jenis_kelamin_form").style.display = "block";
+	} else {
+		document.getElementById("set_jenis_kelamin_form").style.display = "none";
+	}
+}
+
+function get_datetime(date) {
+	var dd = date.getDate();
+	var mm = date.getMonth()+1; 
+	var yyyy = date.getFullYear();
+	if (dd<10) {
+	    dd = '0' + dd;
+	}
+	if (mm<10) {
+	    mm = '0' + mm;
+	}
+	return yyyy + mm + dd;
+}
+
+function add_user() {
+	cek('adduserform', false);
+	cek("wait", true);
+	var username = document.getElementById("set_username").value;
+	var user_id = document.getElementById("set_user_id").value;
+	var tanggal_hadir = document.getElementById("set_tanggal_hadir").value;
+	if (!tanggal_hadir) {
+		tanggal_hadir = date_now;
+	}
+	var jenis_kelamin = document.getElementById("set_jenis_kelamin").value;
+	if (!set_jenis_kelamin) {
+		jenis_kelamin = "";
+	}
+	if (tanggal_hadir && tanggal_hadir.includes("-")) {
+	    tanggal_hadir = tanggal_hadir.replace(/-/g, "");
+	    if (tanggal_hadir && date_now && date_now.length == 12) {
+	    	tanggal_hadir += date_now.slice(8, 12);
+	    }
+	}
+	if (username && user_id && tanggal_hadir) {
+    	cek('wait', true);
+		addScript(server + "token=" + getToken() + "&action=adduser&username=" + username + "&user_id=" + user_id + "&tanggal_hadir=" + tanggal_hadir + "&jenis_kelamin=" + jenis_kelamin);
+	} else {
+		err("Terjadi Kesalahan di Userame / User Id / Tanggal Hadir")
+	}
+}
+
+//format waktu/tanggal dari variable datetime
+function formatWaktu(datetime) {
+  var bulan_lengkap = ['error','jan','feb','mar','apr','mei','jun','jul','agust','sep','okt','nov','des'];
+  var hasil = "";
+  datetime = datetime.toString();
+  if (datetime.length == 12) {
+    var tahun = datetime.slice(0, 4);
+    var bulan = datetime.slice(4, 6);
+    var hari = datetime.slice(6, 8);
+    var jam = datetime.slice(8, 10);
+    var menit = datetime.slice(10, 12);
+    hasil = hari + "-" + bulan_lengkap[parseInt(bulan)] + "-" + tahun + " " + jam + ":" + menit;
+  }
+  return hasil;
+}
+
+function show_data(username, user_id, tanggal_hadir, jenis_kelamin) {
+    document.getElementById("myModal").style.display = "block";
+    document.getElementById("username").innerHTML = username;
+    document.getElementById("user_id").innerHTML = user_id;
+    var _tanggal_hadir = formatWaktu(tanggal_hadir);
+    document.getElementById("tanggal_hadir").innerHTML = _tanggal_hadir;
+    document.getElementById("jenis_kelamin").innerHTML = jenis_kelamin;
+    //document.getElementById("tmpmail").innerHTML = '<button class="btn btn-primary" onclick="send_data(\'' + username + '\', \'' + user_id + '\', \'' + joindate + '\', \'' + expireddate + '\')">Send Email</button>';
+}
+
+function show_delete(del_username, del_user_id, del_tanggal_hadir, del_jenis_kelamin) {
+    document.getElementById("myModalDel").style.display = "block";
+    document.getElementById("del_username").innerHTML = del_username;
+    document.getElementById("del_user_id").innerHTML = del_user_id;
+    var _del_tanggal_hadir = formatWaktu(del_tanggal_hadir);
+    document.getElementById("del_tanggal_hadir").innerHTML = _del_tanggal_hadir;
+    document.getElementById("del_jenis_kelamin").innerHTML = del_jenis_kelamin;
+    document.getElementById("tmpdel").innerHTML = '<button class="btn btn-danger" onclick="del_user(\'' + del_user_id + '\')">Hapus</button>';
+}
+
+function addData(username, user_id, tanggal_hadir, jenis_kelamin) {
+	var _jenis_kelamin = '';
+	if (username && user_id && tanggal_hadir && jenis_kelamin) {
+		if (jenis_kelamin == 'laki-laki') {
+			_jenis_kelamin = '<span class="badge badge-pill badge-primary">Laki-Laki</span>';
+		} else if (jenis_kelamin == 'perempuan') {
+			_jenis_kelamin = '<span class="badge badge-pill badge-warning">Perempuan</span>';
+		} else {
+			_jenis_kelamin = '<span class="badge badge-pill badge-dark">Tidak Diketahui</span>';
+		}
+
+		var tableRef = document.getElementById('userlist').getElementsByTagName('tbody')[0];
+		var newRow = tableRef.insertRow(0);
+		newRow.id = "id_" + user_id;
+		var newCell0 = newRow.insertCell(0);
+		//newCell0.style = "max-width:200px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;";
+		newCell0.innerHTML = "<a href='https://t.me/" + username + "' target='_blank'>" + username + "</a>";
+		var newCell1 = newRow.insertCell(1);
+		var _tanggal_hadir = formatWaktu(tanggal_hadir);
+		if (!_tanggal_hadir) {
+		    _tanggal_hadir = formatWaktu(tanggal_hadir);
+		}
+		newCell1.innerHTML = _tanggal_hadir;
+		var newCell2 = newRow.insertCell(2);
+		//newCell2.id = user_id;
+		newCell2.innerHTML = _jenis_kelamin;
+		var newCell3 = newRow.insertCell(3);
+		var _aksi = '<button class="btn btn-info btn-sm mr-2 mt-2" onclick="show_data(\'' + username + '\', \'' + user_id + '\', \'' + tanggal_hadir + '\', \'' + jenis_kelamin + '\')">Detail</button>';
+		if (is_admin) {
+			_aksi += '<button class="btn btn-danger btn-sm mr-2 mt-2" onclick="show_delete(\'' + username + '\', \'' + user_id + '\', \'' + tanggal_hadir + '\', \'' + jenis_kelamin + '\')">Hapus</button>';
+		}
+		newCell3.innerHTML = _aksi;
+	}
+}
+
+function setusers(datas) {
+	if (datas) {
+		if (datas.status && datas.status == 'success') {
+			var total = datas.total;
+			date_now = datas.now;
+			if (datas.data) {
+				var users = datas.data;
+				var total_lakilaki = 0;
+				var total_perempuan = 0;
+				for (var i in users) {
+					var user = users[i];
+					if (user && user.username && user.user_id && user.tanggal_hadir && user.jenis_kelamin) {
+						if (user.jenis_kelamin == 'laki-laki') {
+				        	++total_lakilaki;
+				        }
+				        if (user.jenis_kelamin == 'perempuan') {
+				        	++total_perempuan;
+				        }
+						addData(user.username, user.user_id, user.tanggal_hadir, user.jenis_kelamin);
+					}
+				}
+				cek("result", true);
+				document.getElementById("total_user").innerHTML = total;
+				document.getElementById("total_lakilaki").innerHTML = total_lakilaki;
+				document.getElementById("total_perempuan").innerHTML = total_perempuan;
+			}
+		} else if (datas.status && datas.status == 'failed'){
+			err(datas.data);
+		} else {
+			err('error tidak diketahui');
+		}
+	}
+	if (is_admin) {
+		cek("admin", true);
+		cek("login", false);
+	} else {
+		cek("guest", true);
+	}
+	cek("wait", false);
+}
+
+function addScript(url) {
+	var head = document.getElementsByTagName('head')[0];
+	var script = document.createElement('script');
+	script.type = 'text/javascript';
+	script.src = url;
+	head.appendChild(script);
+}
+
+function del_user(id) {
+	cek('myModalDel', false);
+    cek('wait', true);
+    addScript(server + "token=" + getToken() + "&action=deluser&user_id=" + id);
+}
+
+function open_url(dir, delay) {
+    if (delay) {
+        setTimeout(function(){
+            window.open(dir, "_self");
+        },2000);
+    } else {
+	    window.open(dir, "_self");
+    }
+}
+
+function setCookie(cname, cvalue, exdays) {
+  var d = new Date();
+  d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+  var expires = "expires="+d.toUTCString();
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+  var name = cname + "=";
+  var ca = document.cookie.split(';');
+  for(var i = 0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+
+function sign_in() {
+	cek("login", false);
+	var key = document.getElementById("key").value;
+	if (key && key != "") {
+		setCookie("key", key, 3);
+	}
+	auth();
+}
+
+function sign_out() {
+	setCookie("key", "", 0);
+	open_url("daftar-hadir.html");
+}
+
+function initialize(res) {
+	if (res == "success") {
+		cek("guest", false);
+		is_admin = true;
+    	addScript(server + "&action=getusers");
+	} else {
+		setCookie("key", "", 0);
+		err("Key Salah!");
+		cek("login", true);
+	    cek("wait", false);
+	}
+}
+
+function getToken() {
+	var key = getCookie("key");
+  	if (key) {
+  		return key;
+  	}
+  	return "";
+}
+
+function auth() {
+	cek("wait", true);
+	var key = getCookie("key");
+  	if (key && key != "") {
+  		cek("login", false);
+  		addScript(server + "token=" + key + "&action=auth");
+  	} else {
+  		addScript(server + "&action=getusers");
+  	}
+}
+
+auth();
+
+</script>
+</body>
+</html>
